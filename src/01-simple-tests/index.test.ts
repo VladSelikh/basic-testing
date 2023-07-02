@@ -34,7 +34,7 @@ describe('simpleCalculator tests', () => {
 
   test('should return null for invalid arguments', () => {
     expect(
-      simpleCalculator({ a: '2', b: 32, action: Action.Exponentiate }),
+      simpleCalculator({ a: '2', b: 32, action: Action.Multiply }),
     ).toBeNull();
   });
 });
