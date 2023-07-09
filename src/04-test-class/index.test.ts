@@ -94,7 +94,8 @@ describe('BankAccount', () => {
   test('should throw SynchronizationFailedError if fetchBalance returned null', async () => {
     jest.spyOn(bankAccount, 'fetchBalance').mockResolvedValueOnce(null);
 
-    const syncBalance = bankAccount.synchronizeBalance.bind(bankAccount);
-    await expect(syncBalance).rejects.toThrow(SynchronizationFailedError);
+    await expect(bankAccount.synchronizeBalance()).rejects.toThrow(
+      SynchronizationFailedError,
+    );
   });
 });

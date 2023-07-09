@@ -93,10 +93,12 @@ describe('readFileAsynchronously', () => {
   });
 
   test('should return file content if file exists', async () => {
+    const expectedContent = 'content';
+
     jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-    jest.spyOn(fsPromises, 'readFile').mockResolvedValue('content');
+    jest.spyOn(fsPromises, 'readFile').mockResolvedValue(expectedContent);
     const fileContent = await readFileAsynchronously(fileName);
 
-    expect(typeof fileContent).toBe('string');
+    expect(fileContent).toBe(expectedContent);
   });
 });
