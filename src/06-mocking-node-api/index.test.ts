@@ -35,7 +35,7 @@ describe('doStuffByTimeout', () => {
     doStuffByTimeout(cb, 500);
     expect(cb).not.toBeCalled();
 
-    jest.runAllTimers();
+    jest.advanceTimersByTime(500);
     expect(cb).toBeCalledTimes(1);
   });
 });
@@ -67,11 +67,11 @@ describe('doStuffByInterval', () => {
 
     expect(cb).not.toBeCalled();
 
-    jest.runOnlyPendingTimers();
+    jest.advanceTimersByTime(500);
 
     expect(cb).toBeCalledTimes(1);
 
-    jest.runOnlyPendingTimers();
+    jest.advanceTimersByTime(500);
 
     expect(cb).toBeCalledTimes(2);
   });
