@@ -35,7 +35,7 @@ describe('doStuffByTimeout', () => {
     doStuffByTimeout(cb, 500);
     expect(cb).not.toBeCalled();
 
-    jest.runAllTimers();
+    jest.advanceTimersByTime(500);
     expect(cb).toBeCalledTimes(1);
   });
 });
@@ -67,11 +67,11 @@ describe('doStuffByInterval', () => {
 
     expect(cb).not.toBeCalled();
 
-    jest.runOnlyPendingTimers();
+    jest.advanceTimersByTime(500);
 
     expect(cb).toBeCalledTimes(1);
 
-    jest.runOnlyPendingTimers();
+    jest.advanceTimersByTime(500);
 
     expect(cb).toBeCalledTimes(2);
   });
@@ -93,10 +93,12 @@ describe('readFileAsynchronously', () => {
   });
 
   test('should return file content if file exists', async () => {
+    const expectedContent = 'content';
+
     jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-    jest.spyOn(fsPromises, 'readFile').mockResolvedValue('content');
+    jest.spyOn(fsPromises, 'readFile').mockResolvedValue(expectedContent);
     const fileContent = await readFileAsynchronously(fileName);
 
-    expect(typeof fileContent).toBe('string');
+    expect(fileContent).toBe(expectedContent);
   });
 });

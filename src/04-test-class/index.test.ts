@@ -10,10 +10,15 @@ import lodash from 'lodash';
 
 const initialBalance = 5000;
 const fetchedBalance = 50;
-const bankAccount: BankAccount = getBankAccount(initialBalance);
+
+let bankAccount: BankAccount;
 const accountToTransferTo: BankAccount = getBankAccount(initialBalance);
 
 describe('BankAccount', () => {
+  beforeEach(() => {
+    bankAccount = getBankAccount(initialBalance);
+  });
+
   test('should create account with initial balance', () => {
     expect(bankAccount.getBalance()).toBe(initialBalance);
   });
@@ -74,7 +79,7 @@ describe('BankAccount', () => {
       .mockReturnValueOnce(fetchedBalance)
       .mockReturnValueOnce(1);
     const result = await bankAccount.fetchBalance();
-    expect(typeof result).toBe('number');
+    expect(result).toBe(fetchedBalance);
   });
 
   test('should set new balance if fetchBalance returned number', async () => {
@@ -89,7 +94,8 @@ describe('BankAccount', () => {
   test('should throw SynchronizationFailedError if fetchBalance returned null', async () => {
     jest.spyOn(bankAccount, 'fetchBalance').mockResolvedValueOnce(null);
 
-    const syncBalance = bankAccount.synchronizeBalance.bind(bankAccount);
-    expect(syncBalance).rejects.toThrow(SynchronizationFailedError);
+    await expect(bankAccount.synchronizeBalance()).rejects.toThrow(
+      SynchronizationFailedError,
+    );
   });
 });
